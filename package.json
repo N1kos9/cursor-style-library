@@ -1,0 +1,63 @@
+{
+  "name": "cursor-style",
+  "version": "1.1.7",
+  "description": "Multiple choose cursors prebuilt to choose from",
+  "main": "dist/cjs/index.js",
+  "files": [
+    "dist"
+  ],
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rollup -c --bundleConfigAsCjs"
+  },
+  "keywords": [
+    "cursor",
+    "cursor-style",
+    "custom-cursor",
+    "mouse-pointer",
+    "cursor-effects",
+    "react",
+    "interactive-websites",
+    "ui-enhancements",
+    "web-design",
+    "user-experience",
+    "ux-design",
+    "web-development",
+    "frontend",
+    "browser",
+    "javascript",
+    "typescript",
+    "webdev"
+  ],
+  "author": "Nikos",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "rollup": "^4.9.6",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
