@@ -1,6 +1,6 @@
 {
   "name": "cursor-style",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Multiple choose cursors prebuilt to choose from",
   "main": "dist/cjs/index.js",
   "files": [
@@ -21,6 +21,7 @@
   "keywords": [
     "cursor",
     "cursor-style",
+    "custom-cursor",
     "custom-cursor",
     "mouse-pointer",
     "cursor-effects",

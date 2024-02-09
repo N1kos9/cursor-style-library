@@ -28,7 +28,9 @@ npm install cursor-style
 
 ## 4. Visualisation
 
-![Animation](https://github.com/N1kos9/calculator/assets/139173199/791d7f45-7f47-4f81-9ae3-3e10ad7d869f)
+![First Cursor](https://github.com/N1kos9/calculator/assets/139173199/85a57eb9-fd37-4d3c-bab1-0d65e19675e3)
+![Second Cursor](https://github.com/N1kos9/calculator/assets/139173199/46c59406-2a45-464a-9321-19989c08bb3d)
+![Third Cursor](https://github.com/N1kos9/calculator/assets/139173199/2070b0a6-c4d5-4964-b519-718051eed7ef)
 
 ## 5. **Usage**
 
