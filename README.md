@@ -45,7 +45,7 @@ import { CustomCursor } from "cursor-style";
 
 return (
   <div>
-    <CursorOne />
+    <CursorOne delay={0 / 10} />
   </div>
 );
 
@@ -53,7 +53,7 @@ return (
 
 return (
   <div>
-    <CustomCursor type="one/two/three" />
+    <CustomCursor type="one/two/three" delay={0 / 10} />
   </div>
 );
 ```
