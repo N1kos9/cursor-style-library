@@ -1,38 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { baseCursorStyle, hoveringStyle } from "../styles/styles";
+import { useCursorDelay } from "./features/useCursorDelay";
 
-export const CursorOne: React.FC = () => {
-  const [cursorX, setCursorX] = useState<number>(0);
-  const [cursorY, setCursorY] = useState<number>(0);
+export const CursorOne: React.FC<{ delay: number }> = ({ delay }) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
 
+  // Adjusted to destructure the returned object to get the position directly
+  const { position } = useCursorDelay(delay, { x: 0, y: 0 });
+
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      // Use clientX and clientY for mouse position relative to the viewport
-      setCursorX(clientX);
-      setCursorY(clientY);
-      const elemBelow = document.elementFromPoint(clientX, clientY);
-      const hoverableElements = ["A", "BUTTON", "INPUT"];
+    // Function to check if the cursor is hovering over interactive elements
+    const checkHovering = () => {
+      const elemBelow = document.elementFromPoint(position.x, position.y);
+      const hoverableElements = ["A", "BUTTON", "INPUT", "TEXTAREA"];
       setIsHovering(
         elemBelow !== null && hoverableElements.includes(elemBelow.tagName)
       );
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
-    return () => window.removeEventListener("mousemove", updateMousePosition);
-  }, []);
+    checkHovering();
+
+    // This effect should rerun whenever the position changes, ensuring the cursor's hover state is updated accordingly
+  }, [position.x, position.y]); // Updated to specifically listen for changes in position.x and position.y
 
   return (
     <div
       style={{
         ...baseCursorStyle,
         ...(isHovering ? hoveringStyle : {}),
-        left: `${cursorX}px`,
-        top: `${cursorY}px`,
-        // Ensure 'position: fixed' is included either here or in baseCursorStyle
-        // If already in baseCursorStyle, this line can be omitted
-        position: "fixed",
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        position: "fixed", // Ensuring position is fixed for the custom cursor
+        pointerEvents: "none", // Ensure the custom cursor doesn't interfere with elements below it
       }}
     />
   );

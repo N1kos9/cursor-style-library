@@ -1,45 +1,38 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { baseCursorStyle } from "../styles/styles";
+import { useCursorDelay } from "./features/useCursorDelay"; // Ensure this path is correct
 
-export const CursorTwo: React.FC = () => {
+export const CursorTwo: React.FC<{ delay: number }> = ({ delay }) => {
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorOutlineRef = useRef<HTMLDivElement>(null);
-  const cursorPosRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const requestRef = useRef<number | null>(null);
 
-  const moveCursor = (e: MouseEvent) => {
-    cursorPosRef.current = { x: e.clientX, y: e.clientY };
-  };
+  // Use the hook for the delayed outline position
+  const { position: delayedPosition } = useCursorDelay(delay, { x: 0, y: 0 });
 
-  const followCursor = () => {
-    if (cursorDotRef.current && cursorOutlineRef.current) {
-      const { x, y } = cursorPosRef.current;
-      cursorDotRef.current.style.left = `${x}px`;
-      cursorDotRef.current.style.top = `${y}px`;
-
-      const outlineX = parseFloat(cursorOutlineRef.current.style.left || "0");
-      const outlineY = parseFloat(cursorOutlineRef.current.style.top || "0");
-      const dx = x - outlineX;
-      const dy = y - outlineY;
-
-      cursorOutlineRef.current.style.left = `${outlineX + dx * 0.1}px`;
-      cursorOutlineRef.current.style.top = `${outlineY + dy * 0.1}px`;
-    }
-
-    requestRef.current = requestAnimationFrame(followCursor);
-  };
-
+  // Add an event listener for the dot to follow the cursor without delay
   useEffect(() => {
-    window.addEventListener("mousemove", moveCursor);
-    requestRef.current = requestAnimationFrame(followCursor);
-
-    return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      if (requestRef.current !== null) {
-        cancelAnimationFrame(requestRef.current);
+    const moveDot = (event: MouseEvent) => {
+      if (cursorDotRef.current) {
+        cursorDotRef.current.style.left = `${event.clientX}px`;
+        cursorDotRef.current.style.top = `${event.clientY}px`;
       }
     };
+
+    // Listen to mousemove event to move the dot instantly with the cursor
+    window.addEventListener("mousemove", moveDot);
+
+    return () => {
+      window.removeEventListener("mousemove", moveDot);
+    };
   }, []);
+
+  useEffect(() => {
+    // This effect updates the outline position with delay
+    if (cursorOutlineRef.current) {
+      cursorOutlineRef.current.style.left = `${delayedPosition.x}px`;
+      cursorOutlineRef.current.style.top = `${delayedPosition.y}px`;
+    }
+  }, [delayedPosition]);
 
   return (
     <>
@@ -50,6 +43,9 @@ export const CursorTwo: React.FC = () => {
           width: "10px",
           height: "10px",
           // Additional styles for the dot
+          position: "fixed",
+          pointerEvents: "none",
+          zIndex: 9999, // Ensure it's above other elements
         }}
       />
       <div
@@ -63,7 +59,9 @@ export const CursorTwo: React.FC = () => {
           pointerEvents: "none",
           transform: "translate(-50%, -50%)",
           mixBlendMode: "difference",
-          zIndex: 9999, // Ensure it's above other elements
+          zIndex: 9998, // Slightly below the dot to ensure dot is always visible
+          backgroundColor: "transparent", // Explicitly set to transparent
+          position: "fixed",
         }}
       />
     </>

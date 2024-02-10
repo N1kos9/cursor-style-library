@@ -1,14 +1,20 @@
 import React from 'react';
 
-declare const CursorOne: React.FC;
+declare const CursorOne: React.FC<{
+    delay: number;
+}>;
 
-declare const CursorTwo: React.FC;
+declare const CursorTwo: React.FC<{
+    delay: number;
+}>;
 
-declare const CursorThree: React.FC;
+declare const CursorThree: React.FC<{
+    delay: number;
+}>;
 
-interface CustomCursorProps {
-    type: "one" | "two" | "three";
-}
-declare const CustomCursor: React.FC<CustomCursorProps>;
+declare const CustomCursor: React.FC<{
+    type: string;
+    delay: number;
+}>;
 
 export { CursorOne, CursorThree, CursorTwo, CustomCursor };
