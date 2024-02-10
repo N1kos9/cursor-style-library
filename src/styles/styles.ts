@@ -10,6 +10,7 @@ export const baseCursorStyle: React.CSSProperties = {
   mixBlendMode: "difference",
   cursor: "none",
   transition: "transform 0.2s ease",
+  zIndex: 2147483647,
 };
 
 export const hoveringStyle: React.CSSProperties = {

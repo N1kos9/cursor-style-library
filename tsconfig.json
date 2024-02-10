@@ -15,7 +15,10 @@
     "declaration": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "cursor-style": ["./node_modules/cursor-style/dist/esm/index.js"]
+    }
   },
   "include": ["src"]
 }

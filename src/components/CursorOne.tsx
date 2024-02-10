@@ -8,9 +8,11 @@ export const CursorOne: React.FC = () => {
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setCursorX(e.pageX);
-      setCursorY(e.pageY);
-      const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+      const { clientX, clientY } = e;
+      // Use clientX and clientY for mouse position relative to the viewport
+      setCursorX(clientX);
+      setCursorY(clientY);
+      const elemBelow = document.elementFromPoint(clientX, clientY);
       const hoverableElements = ["A", "BUTTON", "INPUT"];
       setIsHovering(
         elemBelow !== null && hoverableElements.includes(elemBelow.tagName)
@@ -28,6 +30,9 @@ export const CursorOne: React.FC = () => {
         ...(isHovering ? hoveringStyle : {}),
         left: `${cursorX}px`,
         top: `${cursorY}px`,
+        // Ensure 'position: fixed' is included either here or in baseCursorStyle
+        // If already in baseCursorStyle, this line can be omitted
+        position: "fixed",
       }}
     />
   );

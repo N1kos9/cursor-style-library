@@ -1,6 +1,6 @@
 {
   "name": "cursor-style",
-  "version": "1.1.8",
+  "version": "1.1.21",
   "description": "Multiple choose cursors prebuilt to choose from",
   "main": "dist/cjs/index.js",
   "files": [
@@ -12,7 +12,8 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {

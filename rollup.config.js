@@ -12,27 +12,31 @@ export default [
     input: "src/index.ts",
     output: [
       {
-        file: packageJson.main, // Should point to "dist/cjs/index.js" if you want a CommonJS version
+        file: packageJson.main, // CommonJS version
         format: "cjs",
         sourcemap: true,
       },
       {
-        file: packageJson.module, // Correct for ES module version
+        file: packageJson.module, // ES module version
         format: "esm",
         sourcemap: true,
       },
     ],
     plugins: [
       peerDepsExternal(),
-      resolve(),
-      commonjs(),
-      typescript({ tsconfig: "./tsconfig.json" }), // Ensure you have a tsconfig.json configured for your project
+      resolve({
+        browser: true, // Adjust if targeting node environment
+      }),
+      commonjs({
+        include: /node_modules/, // Convert CommonJS modules in node_modules to ES6
+      }),
+      typescript({ tsconfig: "./tsconfig.json" }),
       terser(),
     ],
   },
   {
-    input: "src/index.ts", // Typically, the input for d.ts generation should be your source TS file
-    output: [{ file: "dist/index.d.ts", format: "esm" }], // Output path for your type declarations
+    input: "src/index.ts",
+    output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts.default()],
   },
 ];
