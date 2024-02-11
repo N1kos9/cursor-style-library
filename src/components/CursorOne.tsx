@@ -1,40 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { baseCursorStyle, hoveringStyle } from "../styles/styles";
-import { useCursorDelay } from "./features/useCursorDelay";
+import { useCursorDelay } from "./features/useCursorDelay"; // Adjust import path as needed
 
-export const CursorOne: React.FC<{ delay: number }> = ({ delay }) => {
+export const CursorOne: React.FC<{
+  delay?: number; // Make delay optional
+  size?: number;
+  bgColor?: string;
+  useMixBlendDifference?: boolean;
+}> = ({
+  delay,
+  size = 20, // Default size
+  bgColor = "white", // Default background color set to white
+  useMixBlendDifference = true, // Option to enable or disable mix blend mode
+}) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
-
-  // Adjusted to destructure the returned object to get the position directly
   const { position } = useCursorDelay(delay, { x: 0, y: 0 });
 
   useEffect(() => {
-    // Function to check if the cursor is hovering over interactive elements
-    const checkHovering = () => {
-      const elemBelow = document.elementFromPoint(position.x, position.y);
+    const updateHoverState = (event: MouseEvent) => {
       const hoverableElements = ["A", "BUTTON", "INPUT", "TEXTAREA"];
+      const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
       setIsHovering(
-        elemBelow !== null && hoverableElements.includes(elemBelow.tagName)
+        !!elemBelow && hoverableElements.includes(elemBelow.tagName)
       );
     };
 
-    checkHovering();
+    document.addEventListener("mousemove", updateHoverState);
+    return () => document.removeEventListener("mousemove", updateHoverState);
+  }, []);
 
-    // This effect should rerun whenever the position changes, ensuring the cursor's hover state is updated accordingly
-  }, [position.x, position.y]); // Updated to specifically listen for changes in position.x and position.y
+  const cursorStyle: React.CSSProperties = {
+    width: `${size}px`,
+    height: `${size}px`,
+    borderRadius: "50%",
+    position: "fixed",
+    left: `${position.x}px`,
+    top: `${position.y}px`,
+    pointerEvents: "none",
+    transform: `translate(-50%, -50%)${isHovering ? " scale(5)" : ""}`,
+    transition: "transform 0.2s ease",
+    backgroundColor: bgColor,
+    mixBlendMode: useMixBlendDifference ? "difference" : "normal",
+    zIndex: 9999, // Ensure it's above most elements
+  };
 
-  return (
-    <div
-      style={{
-        ...baseCursorStyle,
-        ...(isHovering ? hoveringStyle : {}),
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        position: "fixed", // Ensuring position is fixed for the custom cursor
-        pointerEvents: "none", // Ensure the custom cursor doesn't interfere with elements below it
-      }}
-    />
-  );
+  return <div style={cursorStyle} />;
 };
 
 export default CursorOne;

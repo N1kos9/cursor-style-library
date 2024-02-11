@@ -8,7 +8,11 @@ interface Position {
 const lerp = (start: number, end: number, alpha: number) =>
   (1 - alpha) * start + alpha * end;
 
-export const useCursorDelay = (delay: number, initialPosition: Position) => {
+// Set a default value for delay in the function parameters
+export const useCursorDelay = (
+  delay: number = 0,
+  initialPosition: Position
+) => {
   const [position, setPosition] = useState<Position>(initialPosition);
   const frame = useRef<number>(0);
   const targetPosition = useRef<Position>(initialPosition);
